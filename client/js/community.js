@@ -11,7 +11,7 @@ async function loadGallery(artworkId) {
     section.innerHTML = ''
 
     if (drawings.length === 0) {
-      section.innerHTML = '<p class="empty-msg">Aucun dessin pour cette œuvre encore 🎨</p>'
+      section.innerHTML = '<p class="empty-msg">aucun dessin</p>'
       return
     }
 
@@ -35,7 +35,7 @@ async function loadGallery(artworkId) {
     section.appendChild(grid)
 
   } catch (err) {
-    section.innerHTML = '<p class="empty-msg">Erreur de chargement.</p>'
+    section.innerHTML = '<p class="empty-msg">erreur changement</p>'
   }
 }
 
