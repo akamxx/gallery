@@ -8,13 +8,15 @@ const colorBtns = document.querySelectorAll(".color");
 
 //constantes
 const brushWidth = 5;
+const artworkData = JSON.parse(localStorage.getItem("selectedArtwork"));
 
 //etat du canvas
-let color = "#000";
+let color = "#FFF";
 let isDrawing = false;
 let previousX = 0;
 let previousY = 0;
 let currentTool = paintbrush.id;
+let orignalImage;
 
 //Fonctions
 const setCanvasBackground = () => {
@@ -24,7 +26,7 @@ const setCanvasBackground = () => {
 };
 
 const startDrawing = (e) => {
-  drawingColor = currentTool === eraser.id ? "#FFF" : color;
+  let drawingColor = currentTool === eraser.id ? "#FFF" : color;
 
   isDrawing = true;
   previousX = e.offsetX;
@@ -50,11 +52,45 @@ const clearCanvas = () => {
   currentTool = paintbrush.id;
 };
 
+const setAspectRatio = () => {
+  const ratio = orignalImage.naturalWidth / orignalImage.naturalHeight;
+
+  const maxHeight = 700;
+  const maxWidth = 550;
+
+  let width = maxWidth;
+  let height = width / ratio;
+
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = height * ratio;
+  }
+
+  canvas.width = width;
+  canvas.height = height;
+
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+};
+
 //Event listeners
 window.addEventListener("load", () => {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-  setCanvasBackground();
+  if (!artworkData) return;
+  orignalImage = document.querySelector(".original-art");
+  const name = document.querySelector(".piece-name");
+
+  orignalImage.src = artworkData.imageUrl;
+  name.textContent = artworkData.title;
+
+  colorBtns.forEach((btn, index) => {
+    const [r, g, b] = artworkData.palette[index];
+    btn.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+  });
+
+  orignalImage.onload = () => {
+    setAspectRatio();
+    setCanvasBackground();
+  };
 });
 
 canvas.addEventListener("mousedown", startDrawing);
