@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #0d0d0d;
+  --bg:        #2e2c38;
   --surface:   #161616;
   --border:    #2a2a2a;
   --text:      #e8e4dc;
@@ -57,7 +57,7 @@ h1 {
   letter-spacing: -0.01em;
   line-height: 1;
   color: var(--text);
-  margin-bottom: 8px;
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -71,25 +71,75 @@ h1 {
 
 #gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  padding: 20px 40px;
-  max-width: 1600px;
-  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+
+  width: 80%;
   margin: 0 auto;
+
+  gap: 90px 70px;
+  padding: 60px;
+
   flex: 1;
   min-height: 0;
   overflow: hidden;
+
   align-content: center;
+  align-items: center;
+  justify-items: center;
 }
 
 .card {
-  background-color: var(--surface);
+  margin: 20px;
+}
+
+.card {
+  background-color: #111;
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  aspect-ratio: 2 / 3;
   animation: fadeUp 0.5s ease both;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: 3px solid #8a6a2a;
+  outline: 6px solid #c9a84c;
+  outline-offset: -3px;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.7),
+    0 30px 80px rgba(0,0,0,0.5),
+    0 0 0 9px #5a4010,
+    0 0 0 15px #b8922e,
+    0 0 0 17px #e8c86a,
+    0 0 0 20px #3a2a08,
+    0 0 0 22px #7a5a1a;
+}
+
+.card {
+
+ width: 80%;
+  justify-self: center;
+  aspect-ratio: 3 / 4; /* format vertical élégant */
+
+  background-color: #111;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  animation: fadeUp 0.5s ease both;
+  transition: transform var(--transition), box-shadow var(--transition);
+
+  border: 3px solid #8a6a2a;
+  outline: 6px solid #c9a84c;
+  outline-offset: -3px;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.8),
+    0 40px 100px rgba(0,0,0,0.6),
+    0 0 0 9px #5a4010,
+    0 0 0 15px #c9a84c,
+    0 0 0 17px #f0d878,
+    0 0 0 20px #3a2a08,
+    0 0 0 22px #7a5a1a;
 }
 
 .card img {
@@ -108,32 +158,35 @@ h1 {
 .card-info {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 28px 18px 18px;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+  padding: 40px 16px 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
   transition: opacity var(--transition);
   pointer-events: none;
 }
 
 .card-info h2 {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 300;
   line-height: 1.25;
   margin-bottom: 4px;
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-info .artist {
   font-size: 10px;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.55);
   letter-spacing: 0.05em;
 }
 
 .card-info .date {
   font-size: 10px;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.35);
   margin-top: 2px;
+  display: block;
 }
 
 .card:hover .card-info {
@@ -150,7 +203,7 @@ h1 {
   opacity: 0;
   transition: opacity var(--transition);
   pointer-events: none;
-  padding: 24px 20px;
+  padding: 20px 16px;
 }
 
 .card:hover .card-hover {
@@ -165,8 +218,8 @@ h1 {
 }
 
 .color-swatch {
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   border: 1.5px solid rgba(255,255,255,0.25);
   flex-shrink: 0;
@@ -228,9 +281,9 @@ h1 {
 
 .card-skeleton {
   background: var(--surface);
-  aspect-ratio: 2 / 3;
   position: relative;
   overflow: hidden;
+  align-content: center;
 }
 
 .card-skeleton::after {
@@ -253,5 +306,5 @@ h1 {
 
 @media (max-width: 600px) {
   header { padding: 32px 20px 24px; }
-  #gallery { padding: 12px; gap: 10px; grid-template-columns: 1fr 1fr; }
+  #gallery { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); gap: 12px; padding: 12px; }
 }
