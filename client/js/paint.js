@@ -1,4 +1,4 @@
-const canvas =  document.querySelector("canvas");
+const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 const eraser = document.getElementById("eraser");
 const paintbrush = document.getElementById("paintbrush");
@@ -8,68 +8,104 @@ const colorBtns = document.querySelectorAll(".color");
 
 //constantes
 const brushWidth = 5;
+const artworkData = JSON.parse(localStorage.getItem("selectedArtwork"));
 
 //etat du canvas
-let color = "#000";
+let color = "#FFF";
 let isDrawing = false;
 let previousX = 0;
 let previousY = 0;
 let currentTool = paintbrush.id;
+let orignalImage;
 
 //Fonctions
 const setCanvasBackground = () => {
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = color;
-}
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = color;
+};
 
-const startDrawing= (e)=>{
-    drawingColor = currentTool === eraser.id ? "#FFF": color;
+const startDrawing = (e) => {
+  let drawingColor = currentTool === eraser.id ? "#FFF" : color;
 
-    isDrawing = true;
-    previousX = e.offsetX;
-    previousY = e.offsetY;
+  isDrawing = true;
+  previousX = e.offsetX;
+  previousY = e.offsetY;
 
-    ctx.beginPath();
-    ctx.lineWidth = brushWidth;
-    ctx.strokeStyle = drawingColor;
-    ctx.fillStyle = drawingColor;
-    canvasImage = ctx.getImageData(0,0,canvas.width,canvas.height);
-}
+  ctx.beginPath();
+  ctx.lineWidth = brushWidth;
+  ctx.strokeStyle = drawingColor;
+  ctx.fillStyle = drawingColor;
+  canvasImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+};
 
-const draw = (e)=>{
-    if(isDrawing){
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-    }
-}
+const draw = (e) => {
+  if (isDrawing) {
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+  }
+};
 
-const clearCanvas = ()=>{
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setCanvasBackground();
-    currentTool = paintbrush.id;
-}
+const clearCanvas = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  setCanvasBackground();
+  currentTool = paintbrush.id;
+};
+
+const setAspectRatio = () => {
+  const ratio = orignalImage.naturalWidth / orignalImage.naturalHeight;
+
+  const maxHeight = 700;
+  const maxWidth = 550;
+
+  let width = maxWidth;
+  let height = width / ratio;
+
+  if (height > maxHeight) {
+    height = maxHeight;
+    width = height * ratio;
+  }
+
+  canvas.width = width;
+  canvas.height = height;
+
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+};
 
 //Event listeners
 window.addEventListener("load", () => {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+  if (!artworkData) return;
+  orignalImage = document.querySelector(".original-art");
+  const name = document.querySelector(".piece-name");
+
+  orignalImage.src = artworkData.imageUrl;
+  name.textContent = artworkData.title;
+
+  colorBtns.forEach((btn, index) => {
+    const [r, g, b] = artworkData.palette[index];
+    btn.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+  });
+
+  orignalImage.onload = () => {
+    setAspectRatio();
     setCanvasBackground();
+  };
 });
 
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", () => isDrawing = false);
-canvas.addEventListener("mouseleave", () => isDrawing = false)
+canvas.addEventListener("mouseup", () => (isDrawing = false));
+canvas.addEventListener("mouseleave", () => (isDrawing = false));
 
-paintbrush.addEventListener("click", () => currentTool = paintbrush.id);
-eraser.addEventListener("click", () => currentTool = eraser.id);
+paintbrush.addEventListener("click", () => (currentTool = paintbrush.id));
+eraser.addEventListener("click", () => (currentTool = eraser.id));
 
-clearButton.addEventListener("click", () => clearCanvas() );
-saveButton.addEventListener("click", ()=>{});
+clearButton.addEventListener("click", () => clearCanvas());
+saveButton.addEventListener("click", () => {});
 
-colorBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        color = getComputedStyle(btn).backgroundColor;
-    });
+colorBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    color = getComputedStyle(btn).backgroundColor;
+  });
 });
