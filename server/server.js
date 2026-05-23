@@ -1,28 +1,20 @@
 const express = require('express')
 const cors = require('cors')
-
 require('dotenv').config()
-const drawingRoutes = require('./routes/drawingRoutes')
+
 const connectDB = require('./config/db')
-const userRoutes = require('./routes/userRoutes')
+
+const drawingRoutes = require('./routes/drawingRoute')
 
 const app = express()
 
 connectDB()
 
-app.use(express.json())
 app.use(cors())
+app.use(express.json({ limit: '10mb' }))
 
-app.use('/api/users', userRoutes)
 app.use('/api/drawings', drawingRoutes)
 
-app.get('/', (req, res) => {
-  res.send('API marche')
+app.listen(5000, () => {
+  console.log('Server running on port 5000')
 })
-
-const PORT = process.env.PORT || 5000
-
-app.listen(PORT, () => {
-  console.log(`Serveur lancé sur le port ${PORT}`)
-})
-

@@ -79,13 +79,20 @@ async function fetchArtworks() {
           <div class="hover-title">${artwork.title}</div>
           <div class="card-buttons">
             <button class="btn btn-primary create-artwork-button">Create Artwork</button>
-            <button class="btn btn-secondary look-up-artworks-button">Inspired Creations</button>
+            <button class="btn btn-secondary look-up-artworks-button">Inspired Creations</button>  
           </div>
         </div>
       `;
 
-      card.addEventListener("click", () => {
-        // TODO
+      card.querySelector(".create-artwork-button").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const colors = palette.map(([r, g, b]) => `${r},${g},${b}`).join("|");
+        window.location.href = `http://localhost:5173/paint?artworkId=${artwork.id}&palette=${encodeURIComponent(colors)}`;
+      });
+
+      card.querySelector(".look-up-artworks-button").addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.location.href = `http://localhost:5173/community?artworkId=${artwork.id}`;
       });
 
       gallery.appendChild(card);
