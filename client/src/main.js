@@ -5,7 +5,7 @@ fetch("http://localhost:5000/api/users")
   .then((data) => console.log(data))
   .catch((error) => console.error(error));
 
-const artworkIds = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12312, 12313, 12314, 12315, 12316, 17321, 12322, 12328, 2333, 12334];
+const artworkIds = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12101];
 
 const gallery = document.getElementById("gallery");
 
