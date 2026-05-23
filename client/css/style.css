@@ -1,10 +1,8 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg:        #2e2c38;
-  --surface:   #161616;
-  --border:    #2a2a2a;
-  --text:      #e8e4dc;
+  --bg:        #E5DCCE;
+  --surface:   #989090;
+  --border:    #1a1208;
+  --text:      #b4a797;
   --muted:     #7a7570;
   --accent:    #c8b89a;
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -13,83 +11,41 @@
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+    background-color: var(--bg);
 }
 
 header {
   text-align: center;
-  padding: 28px 40px 24px;
+  padding: 20px 50px;
   border-bottom: 1px solid var(--border);
   position: relative;
-  flex-shrink: 0;
-}
-
-header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 2px;
-  background: var(--accent);
-}
-
-.header-eyebrow {
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 12px;
 }
 
 h1 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  line-height: 1;
-  color: var(--text);
-  margin-top: 30px;
+  font-family: 'Playfair Display';
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--border);
+  letter-spacing: -0.02em;
+  font-weight: bold;
   text-align: center;
-}
-
-.header-sub {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--muted);
-  font-weight: 300;
 }
 
 #gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-
-  width: 80%;
   margin: 0 auto;
-
+  width: 80%;
   gap: 90px 70px;
   padding: 60px;
-
   flex: 1;
-  min-height: 0;
-  overflow: hidden;
-
   align-content: center;
   align-items: center;
   justify-items: center;
 }
 
 .card {
-  margin: 20px;
+  margin: 5px;
 }
 
 .card {
@@ -116,10 +72,9 @@ h1 {
 
  width: 80%;
   justify-self: center;
-  aspect-ratio: 3 / 4; /* format vertical élégant */
+  aspect-ratio: 3 / 4; 
 
   background-color: #111;
-  overflow: hidden;
   position: relative;
   cursor: pointer;
   animation: fadeUp 0.5s ease both;
@@ -161,7 +116,7 @@ h1 {
   padding: 40px 16px 16px;
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
   transition: opacity var(--transition);
-  pointer-events: none;
+  
 }
 
 .card-info h2 {
@@ -170,10 +125,7 @@ h1 {
   font-weight: 300;
   line-height: 1.25;
   margin-bottom: 4px;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #fff
 }
 
 .card-info .artist {
@@ -202,7 +154,6 @@ h1 {
   justify-content: center;
   opacity: 0;
   transition: opacity var(--transition);
-  pointer-events: none;
   padding: 20px 16px;
 }
 
@@ -251,7 +202,6 @@ h1 {
 .btn {
   width: 100%;
   padding: 10px 16px;
-  border: none;
   border-radius: 6px;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -282,7 +232,6 @@ h1 {
 .card-skeleton {
   background: var(--surface);
   position: relative;
-  overflow: hidden;
   align-content: center;
 }
 
@@ -304,7 +253,20 @@ h1 {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 900px) {
+  #gallery {
+    grid-template-columns: repeat(2, 1fr);
+    width: 95%;
+    gap: 60px 40px;
+    padding: 40px 20px;
+  }
+}
+
 @media (max-width: 600px) {
-  header { padding: 32px 20px 24px; }
-  #gallery { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); gap: 12px; padding: 12px; }
+  #gallery {
+    grid-template-columns: 1fr;
+    width: 85%;
+    gap: 60px;
+    padding: 40px 20px;
+  }
 }
