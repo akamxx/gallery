@@ -1,0 +1,122 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  background: #f2f2f2;
+  color: #333;
+}
+
+.original-art {
+  width: 200px;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  border-right: 2px solid #ddd;
+}
+
+.canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.piece-name {
+  font-size: 18px; 
+  font-weight: bold;
+}
+
+canvas {
+  background: white;
+  width: 550px;
+  height: 700px;
+  border: 2px dotted black;
+  border-radius: 8px;
+  cursor: crosshair;
+}
+
+.tool-bar {
+  width: 220px;
+  background: #ffffff;
+  border-left: 2px solid #ddd;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tool-bar button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tool-bar ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.color1,
+.color2,
+.color3,
+.color4,
+.color5 {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #aaa;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+
+ul li:nth-child(1) button{
+    background-color: black;
+}
+ul li:nth-child(2) button{
+    background-color: blue;
+}
+ul li:nth-child(3) button{
+    background-color: red;
+}
+ul li:nth-child(4) button{
+    background-color: yellow;
+}
+ul li:nth-child(5) button{
+    background-color: green;
+}
+
+.row.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.clear-canvas {
+  background: #ff4d4d;
+  color: white;
+}
+
+.save-image {
+  background: #4caf50;
+  color: white;
+}
+
+.clear-canvas:hover,
+.save-img:hover {
+  opacity: 0.85;
+}
