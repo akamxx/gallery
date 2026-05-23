@@ -94,8 +94,14 @@ async function fetchArtworks() {
           };
 
           localStorage.setItem("selectedArtwork", JSON.stringify(artworkData));
-          window.location.href = "paint.html";
+          window.location.href = `http://localhost:5173/paint?artworkId=${artwork.id}`;
         });
+
+
+      card.querySelector(".look-up-artworks-button").addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.location.href = `http://localhost:5173/community?artworkId=${artwork.id}`;
+      });
 
       gallery.appendChild(card);
     };

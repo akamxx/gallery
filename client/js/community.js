@@ -1,41 +1,54 @@
 const ARTWORK_IDS = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12311]
 
 async function loadGallery(artworkId) {
+
   const section = document.getElementById('gallery-section')
+
   section.innerHTML = '<p class="loading-msg">Chargement...</p>'
 
   try {
-    const response = await fetch(`/api/drawings/${artworkId}`)
+
+    const response = await fetch(
+      `http://localhost:5000/api/drawings/${artworkId}`
+    )
+
     const drawings = await response.json()
+
+    console.log(drawings)
 
     section.innerHTML = ''
 
     if (drawings.length === 0) {
+
       section.innerHTML = '<p class="empty-msg">aucun dessin</p>'
+
       return
     }
 
     const grid = document.createElement('div')
+
     grid.className = 'gallery-grid'
 
     drawings.forEach((drawing, i) => {
+
       const card = document.createElement('div')
+
       card.className = 'drawing-card'
-      card.style.animationDelay = `${i * 0.06}s`
+
       card.innerHTML = `
         <img src="${drawing.image}" alt="dessin" />
-        <div class="card-footer">
-          <span class="card-author">${drawing.author || 'Anonyme'}</span>
-          <span class="card-score">${drawing.score ?? '—'}%</span>
-        </div>
       `
+
       grid.appendChild(card)
     })
 
     section.appendChild(grid)
 
   } catch (err) {
-    section.innerHTML = '<p class="empty-msg">erreur changement</p>'
+
+    console.error(err)
+
+    section.innerHTML = '<p class="empty-msg">erreur chargement</p>'
   }
 }
 
