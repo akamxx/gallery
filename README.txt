@@ -3,9 +3,9 @@
 2. Installer frontend:
 cd client
 npm install
-npm run dev
+npm start
 
 3. Installer backend:
 cd server
 npm install
-npm run dev
+npm start
