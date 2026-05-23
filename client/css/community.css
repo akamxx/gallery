@@ -1,0 +1,58 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  border-bottom: 1px solid #ddd5c4;
+}
+
+.btn-home {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: #1a1208;
+  color: #f5f0e8;
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.btn-home:hover { opacity: 0.75; transform: translateY(-1px); }
+
+body {
+    background-color: #E5DCCE;
+}
+
+.site-title {
+  font-family: 'Playfair Display';
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1a1208;
+  letter-spacing: -0.02em;
+  font-weight: bold;
+}
+
+.title {
+  padding: 10px 48px 40px;
+}
+.title h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  color: #1a1208;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+.title h1 em {
+  font-style: italic;
+  color: #0f68c2;
+}
+
+.gallery-section {
+  padding: 0 40px 60px;
+}
