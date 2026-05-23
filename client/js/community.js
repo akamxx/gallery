@@ -1,4 +1,4 @@
-const ARTWORK_IDS = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12311]
+const ARTWORK_IDS = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12101];
 
 async function loadGallery(artworkId) {
 
