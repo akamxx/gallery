@@ -19,11 +19,11 @@ async function fetchArtworks() {
   const artworks = await Promise.all(
     artworkIds.map(async (id) => {
       const response = await fetch(
-        `https://api.artic.edu/api/v1/artworks/${id}`
+        `https://api.artic.edu/api/v1/artworks/${id}`,
       );
       const data = await response.json();
       return data.data;
-    })
+    }),
   );
 
   gallery.innerHTML = "";
@@ -59,7 +59,7 @@ async function fetchArtworks() {
               style="background: rgb(${r},${g},${b});"
               title="rgb(${r},${g},${b})"
             ></div>
-          `
+          `,
         )
         .join("");
 
@@ -78,15 +78,24 @@ async function fetchArtworks() {
           <div class="palette-row">${swatchesHTML}</div>
           <div class="hover-title">${artwork.title}</div>
           <div class="card-buttons">
-            <button class="btn btn-primary create-artwork-button">Create Artwork</button>
-            <button class="btn btn-secondary look-up-artworks-button">Inspired Creations</button>
+            <button class="btn btn-primary create-artwork-button">Créer une oeuvre</button>
+            <button class="btn btn-secondary look-up-artworks-button">Voir la gallerie</button>
           </div>
         </div>
       `;
 
-      card.addEventListener("click", () => {
-        // TODO
-      });
+      card
+        .querySelector(".create-artwork-button")
+        .addEventListener("click", () => {
+          const artworkData = {
+            imageUrl: imageUrl,
+            palette: palette,
+            title: artwork.title,
+          };
+
+          localStorage.setItem("selectedArtwork", JSON.stringify(artworkData));
+          window.location.href = "paint.html";
+        });
 
       gallery.appendChild(card);
     };
