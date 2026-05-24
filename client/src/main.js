@@ -1,11 +1,6 @@
 import "../css/style.css";
 import { API, ARTWORK_IDS, ARTIC_IMG_PARAMS_MAIN, UNKNOWN_ARTIST, PALETTE_COLOR_COUNT, CARD_ANIMATION_STEP_MS, ROUTES } from "./constants.js";
 
-fetch(`${API.LOCAL_BASE}/users`)
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((error) => console.error(error));
-
 const gallery = document.getElementById("gallery");
 
 ARTWORK_IDS.forEach(() => {

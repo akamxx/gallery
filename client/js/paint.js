@@ -1,5 +1,5 @@
 const canvas      = document.querySelector("canvas");
-const ctx         = canvas.getContext("2d");
+const context         = canvas.getContext("2d");
 const eraserBtn   = document.getElementById("eraser");
 const brushBtn    = document.getElementById("paintbrush");
 const bucketBtn   = document.getElementById("bucket");
@@ -20,7 +20,6 @@ const refResize   = document.getElementById("refResize");
 const artworkData = JSON.parse(localStorage.getItem("selectedArtwork"));
 const artworkId   = new URLSearchParams(window.location.search).get("artworkId");
 
-// ── STATE ─────────────────────────────────────
 let color       = "#000";
 let brushSize   = 3;
 let isDrawing   = false;
@@ -28,11 +27,9 @@ let currentTool = "paintbrush";
 let originalImg;
 let zoomScale   = 1;
 
-// Undo / Redo stacks
 let undoStack = [];
 let redoStack = [];
 
-// ── UNDO / REDO ───────────────────────────────
 function saveState() {
   undoStack.push(canvas.toDataURL());
   redoStack = [];
@@ -48,8 +45,8 @@ function restoreState(dataUrl) {
   return new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(img, 0, 0);
       resolve();
     };
     img.src = dataUrl;
@@ -71,14 +68,14 @@ redoBtn.addEventListener("click", async () => {
   updateHistoryBtns();
 });
 
-document.addEventListener("keydown", e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "z") { e.preventDefault(); undoBtn.click(); }
-  if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.shiftKey && e.key === "z"))) { e.preventDefault(); redoBtn.click(); }
+document.addEventListener("keydown",event=> {
+  if ((event.ctrlKey || event.metaKey) && event.key === "z") { event.preventDefault(); undoBtn.click(); }
+  if ((event.ctrlKey || event.metaKey) && (event.key === "y" || (event.shiftKey && event.key === "z"))) { event.preventDefault(); redoBtn.click(); }
 });
 
 const setCanvasBackground = () => {
-  ctx.fillStyle = "#faf8f4";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = "#faf8f4";
+  context.fillRect(0, 0, canvas.width, canvas.height);
 };
 
 const setAspectRatio = () => {
@@ -110,10 +107,10 @@ zoomOutBtn.addEventListener("click", () => setZoom(zoomScale - 0.25));
 zoomReset.addEventListener("click",  () => setZoom(1));
 
 
-document.querySelector(".canvas-area").addEventListener("wheel", e => {
-  if (e.ctrlKey || e.metaKey) {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+document.querySelector(".canvas-area").addEventListener("wheel",event=> {
+  if (event.ctrlKey || event.metaKey) {
+    event.preventDefault();
+    const delta = event.deltaY > 0 ? -0.1 : 0.1;
     setZoom(zoomScale + delta);
   }
 }, { passive: false });
@@ -121,19 +118,18 @@ document.querySelector(".canvas-area").addEventListener("wheel", e => {
 let lastX = 0, lastY = 0;
 
 
-function getCanvasCoords(e) {
+function getCanvasCoords(event) {
   const rect = canvas.getBoundingClientRect();
- 
   const scaleX = canvas.width  / rect.width;
   const scaleY = canvas.height / rect.height;
   return {
-    x: (e.clientX - rect.left) * scaleX,
-    y: (e.clientY - rect.top)  * scaleY
+    x: (event.clientX - rect.left) * scaleX,
+    y: (event.clientY - rect.top)  * scaleY
   };
 }
 
-canvas.addEventListener("mousedown", e => {
-  const { x, y } = getCanvasCoords(e);
+canvas.addEventListener("mousedown",event=> {
+  const { x, y } = getCanvasCoords(event);
 
   if (currentTool === "bucket") {
     saveState();
@@ -145,26 +141,25 @@ canvas.addEventListener("mousedown", e => {
   lastX = x;
   lastY = y;
 
- 
-  ctx.beginPath();
-  ctx.arc(lastX, lastY, brushSize / 2, 0, Math.PI * 2);
-  ctx.fillStyle = currentTool === "eraser" ? "#faf8f4" : color;
-  ctx.fill();
+  context.beginPath();
+  context.arc(lastX, lastY, brushSize / 2, 0, Math.PI * 2);
+  context.fillStyle = currentTool === "eraser" ? "#faf8f4" : color;
+  context.fill();
 });
 
-canvas.addEventListener("mousemove", e => {
+canvas.addEventListener("mousemove",event=> {
   if (!isDrawing) return;
-  const { x, y } = getCanvasCoords(e);
+  const { x, y } = getCanvasCoords(event);
   const drawColor = currentTool === "eraser" ? "#faf8f4" : color;
 
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(x, y);
-  ctx.strokeStyle = drawColor;
-  ctx.lineWidth   = brushSize;
-  ctx.lineCap     = "round";
-  ctx.lineJoin    = "round";
-  ctx.stroke();
+  context.beginPath();
+  context.moveTo(lastX, lastY);
+  context.lineTo(x, y);
+  context.strokeStyle = drawColor;
+  context.lineWidth   = brushSize;
+  context.lineCap     = "round";
+  context.lineJoin    = "round";
+  context.stroke();
 
   lastX = x;
   lastY = y;
@@ -188,7 +183,7 @@ function colorsMatch(a, b, tolerance = 32) {
 }
 
 function floodFill(startX, startY, fillColor) {
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const imgData = context.getImageData(0, 0, canvas.width, canvas.height);
   const data = imgData.data;
   const w = canvas.width, h = canvas.height;
 
@@ -218,7 +213,7 @@ function floodFill(startX, startY, fillColor) {
     stack.push([x+1, y], [x-1, y], [x, y+1], [x, y-1]);
   }
 
-  ctx.putImageData(imgData, 0, 0);
+  context.putImageData(imgData, 0, 0);
 }
 
 function setTool(name) {
@@ -335,8 +330,8 @@ function openNameModal() {
     };
 
     const onCancel = () => { cleanup(); resolve(null); };
-    const onKeydown = (e) => { if (e.key === "Enter") onConfirm(); if (e.key === "Escape") onCancel(); };
-    const onOverlayClick = (e) => { if (e.target === overlay) onCancel(); };
+    const onKeydown = (event) => { if (event.key === "Enter") onConfirm(); if (event.key === "Escape") onCancel(); };
+    const onOverlayClick = (event) => { if (event.target === overlay) onCancel(); };
 
     confirmBtn.addEventListener("click", onConfirm);
     cancelBtn.addEventListener("click", onCancel);
@@ -359,21 +354,21 @@ refHeader.addEventListener("click", () => {
 let isResizingRef = false;
 let refResizeStartX, refResizeStartY, refResizeStartW, refResizeStartH;
 
-refResize.addEventListener("mousedown", e => {
-  e.stopPropagation();
+refResize.addEventListener("mousedown", event => {
+  event.stopPropagation();
   isResizingRef = true;
-  refResizeStartX = e.clientX;
-  refResizeStartY = e.clientY;
+  refResizeStartX = event.clientX;
+  refResizeStartY = event.clientY;
   refResizeStartW = refPanel.offsetWidth;
   refResizeStartH = refPanel.offsetHeight;
   document.body.style.userSelect = "none";
   document.body.style.cursor = "se-resize";
 });
 
-document.addEventListener("mousemove", e => {
+document.addEventListener("mousemove", event => {
   if (!isResizingRef) return;
-  const dw = e.clientX - refResizeStartX;
-  const dh = e.clientY - refResizeStartY;
+  const dw = event.clientX - refResizeStartX;
+  const dh = event.clientY - refResizeStartY;
   const newW = Math.max(120, Math.min(520, refResizeStartW + dw));
   const newH = Math.max(100, Math.min(window.innerHeight - 80, refResizeStartH + dh));
   refPanel.style.width  = newW + "px";
@@ -381,7 +376,7 @@ document.addEventListener("mousemove", e => {
   refPanel.style.setProperty("--ref-height", newH + "px");
 });
 
-document.addEventListener("mouseup", () => {
+document.addEventListener("mouseup", event => {
   if (!isResizingRef) return;
   isResizingRef = false;
   document.body.style.userSelect = "";

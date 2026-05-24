@@ -166,11 +166,14 @@ h1 {
   display: flex;
   gap: 8px;
   margin-bottom: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .color-swatch {
   width: 25px;
   height: 25px;
+  
   border-radius: 50%;
   border: 1.5px solid rgba(255,255,255,0.25);
   flex-shrink: 0;
