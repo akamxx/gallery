@@ -46,7 +46,7 @@ async function fetchArtworks() {
       let palette = [];
 
       try {
-        palette = colorThief.getPalette(img, 5);
+        palette = colorThief.getPalette(img, 8);
       } catch (error) {
         console.log("Palette extraction failed");
       }

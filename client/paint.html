@@ -6,13 +6,23 @@
   <link rel="stylesheet" href="css/paint.css">
   <title>Atelier</title>
 </head>
-<body>
+<body class="tool-brush">
 
 <header>
   <div class="header-left">
     <a href="/" class="btn-back">← Galerie</a>
     <label class="piece-name"></label>
   </div>
+
+
+  <div class="header-center">
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomOut" title="Dézoom (Ctrl+−)">−</button>
+      <span class="zoom-level" id="zoomReset" title="Réinitialiser le zoom (Ctrl+0)">100%</span>
+      <button class="zoom-btn" id="zoomIn"  title="Zoom (Ctrl+=)">+</button>
+    </div>
+  </div>
+
   <div class="header-right">
     <button class="btn-undo" title="Annuler (Ctrl+Z)" disabled>↩</button>
     <button class="btn-redo" title="Rétablir (Ctrl+Y)" disabled>↪</button>
@@ -21,33 +31,47 @@
 
 <div class="workspace">
 
-  <!-- LEFT: image de référence -->
-  <div class="ref-panel">
-    <div class="ref-label">Référence</div>
-    <div class="ref-img-wrap">
-      <img class="original-art" src="" alt="Œuvre originale" />
-    </div>
-    <div class="ref-hint">Reproduis cette œuvre avec les couleurs extraites de la palette.</div>
-  </div>
+  
+  <div class="canvas-area">
 
-  <!-- CENTER: canvas -->
-  <div class="canvas-panel">
-    <div class="canvas-wrap">
+    <div class="ref-panel" id="refPanel">
+      <div class="ref-header" id="refHeader">
+        <span class="ref-label">Référence</span>
+        <span class="ref-toggle">▼</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-img-wrap">
+          <img class="original-art" src="" alt="Œuvre originale" />
+        </div>
+        <div class="ref-hint">Reproduis cette œuvre avec les couleurs de la palette.</div>
+      </div>
+     
+      <div class="ref-resize-handle" id="refResize" title="Redimensionner">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M9 1L1 9M9 5L5 9M9 9" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="canvas-viewport">
       <canvas></canvas>
     </div>
   </div>
 
-  <!-- RIGHT: outils -->
+ 
   <div class="tool-panel">
 
     <div class="tool-section">
       <div class="tool-section-label">Outil</div>
       <div class="tool-row">
-        <button class="tool-btn active" id="paintbrush">
-          <span class="icon">🖌️</span>Pinceau
+        <button class="tool-btn active" id="paintbrush" title="Pinceau (B)">
+          <span class="icon">🖌️</span>Brosse
         </button>
-        <button class="tool-btn" id="eraser">
-          <span class="icon">⬜</span>Efface
+        <button class="tool-btn" id="bucket" title="Remplissage (G)">
+          <span class="icon">🪣</span>Remplir
+        </button>
+        <button class="tool-btn" id="eraser" title="Gomme (E)">
+          <span class="icon">⬜</span>Gomme
         </button>
       </div>
     </div>
