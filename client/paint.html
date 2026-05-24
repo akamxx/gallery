@@ -1,77 +1,120 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/paint.css" />
-    <script src="js/paint.js" defer></script>
-    <title>Canvas</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/paint.css">
+  <title>Atelier</title>
+</head>
+<body class="tool-brush">
 
-  <body>
-    <div id="name-modal-overlay">
-      <div id="name-modal">
-        <button id="name-modal-close" aria-label="Fermer">✕</button>
-        <div class="modal-header">
-          <div class="modal-avatar">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#E5DCCE"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </div>
-          <div>
-            <p class="modal-title">Signer votre œuvre</p>
-            <p class="modal-sub">Votre nom apparaîtra dans la galerie</p>
-          </div>
+<header>
+  <div class="header-left">
+    <a href="/" class="btn-back">← Galerie</a>
+    <label class="piece-name"></label>
+  </div>
+
+
+  <div class="header-center">
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomOut" title="Dézoom (Ctrl+−)">−</button>
+      <span class="zoom-level" id="zoomReset" title="Réinitialiser le zoom (Ctrl+0)">100%</span>
+      <button class="zoom-btn" id="zoomIn"  title="Zoom (Ctrl+=)">+</button>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button class="btn-undo" title="Annuler (Ctrl+Z)" disabled>↩</button>
+    <button class="btn-redo" title="Rétablir (Ctrl+Y)" disabled>↪</button>
+  </div>
+</header>
+
+<div class="workspace">
+
+  
+  <div class="canvas-area">
+
+    <div class="ref-panel" id="refPanel">
+      <div class="ref-header" id="refHeader">
+        <span class="ref-label">Référence</span>
+        <span class="ref-toggle">▼</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-img-wrap">
+          <img class="original-art" src="" alt="Œuvre originale" />
         </div>
-        <label class="modal-label" for="author-input">Nom d'artiste</label>
-        <input
-          id="author-input"
-          type="text"
-          placeholder="ex. Marie Dupont"
-          maxlength="60"
-          autocomplete="name"
-        />
-        <p id="author-error">Veuillez entrer un nom.</p>
-        <div class="modal-actions">
-          <button id="name-modal-cancel">Annuler</button>
-          <button id="name-modal-confirm">Publier</button>
-        </div>
+        <div class="ref-hint">Reproduis cette œuvre avec les couleurs de la palette.</div>
+      </div>
+     
+      <div class="ref-resize-handle" id="refResize" title="Redimensionner">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M9 1L1 9M9 5L5 9M9 9" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
       </div>
     </div>
 
-    <div>
-      <img class="original-art" />
-    </div>
-    <div class="canvas">
-      <label class="piece-name"></label>
+    <div class="canvas-viewport">
       <canvas></canvas>
     </div>
-    <div class="tool-bar">
-      <button id="paintbrush">Pinceau</button>
-      <button id="eraser">Efface</button>
+  </div>
 
-      <ul>
-        <li><button class="color"></button></li>
-        <li><button class="color"></button></li>
-        <li><button class="color"></button></li>
-        <li><button class="color"></button></li>
-        <li><button class="color"></button></li>
-      </ul>
+ 
+  <div class="tool-panel">
 
-      <div class="row buttons">
-        <button class="clear-canvas">Effacer le canvas</button>
-        <button class="save-image">Sauvegarder</button>
+    <div class="tool-section">
+      <div class="tool-section-label">Outil</div>
+      <div class="tool-row">
+        <button class="tool-btn active" id="paintbrush" title="Pinceau (B)">
+          <span class="icon">🖌️</span>Brosse
+        </button>
+        <button class="tool-btn" id="bucket" title="Remplissage (G)">
+          <span class="icon">🪣</span>Remplir
+        </button>
+        <button class="tool-btn" id="eraser" title="Gomme (E)">
+          <span class="icon">⬜</span>Gomme
+        </button>
       </div>
     </div>
-  </body>
+
+    <div class="tool-section">
+      <div class="tool-section-label">Taille</div>
+      <div class="size-row">
+        <button class="size-btn active" data-size="3">
+          <div class="size-dot" style="width:4px;height:4px"></div>
+        </button>
+        <button class="size-btn" data-size="8">
+          <div class="size-dot" style="width:8px;height:8px"></div>
+        </button>
+        <button class="size-btn" data-size="16">
+          <div class="size-dot" style="width:13px;height:13px"></div>
+        </button>
+        <button class="size-btn" data-size="28">
+          <div class="size-dot" style="width:18px;height:18px"></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <div class="tool-section-label">Palette</div>
+      <div class="colors-grid" id="colorsGrid"></div>
+      <div class="current-color-wrap">
+        <div class="current-color-swatch" id="currentSwatch"></div>
+        <div class="current-color-label" id="currentColorLabel">Couleur active</div>
+      </div>
+    </div>
+
+    <div class="tool-section" style="border-bottom:none; margin-top:auto;">
+      <div class="action-row">
+        <button class="btn-action btn-clear">Effacer tout</button>
+        <button class="btn-action btn-save">Sauvegarder →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/paint.js" defer></script>
+</body>
 </html>
