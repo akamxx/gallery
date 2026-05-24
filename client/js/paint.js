@@ -73,19 +73,6 @@ redoBtn.addEventListener("click", async () => {
   updateHistoryBtns();
 });
 
-document.addEventListener("keydown", e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "z") { e.preventDefault(); undoBtn.click(); }
-  if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.shiftKey && e.key === "z"))) { e.preventDefault(); redoBtn.click(); }
-
-  if (e.key === "b" || e.key === "B") brushBtn.click();
-  if (e.key === "e" || e.key === "E") eraserBtn.click();
-  if (e.key === "g" || e.key === "G") bucketBtn.click();
-
-  if ((e.ctrlKey || e.metaKey) && e.key === "=") { e.preventDefault(); setZoom(zoomScale + 0.15); }
-  if ((e.ctrlKey || e.metaKey) && e.key === "-") { e.preventDefault(); setZoom(zoomScale - 0.15); }
-  if ((e.ctrlKey || e.metaKey) && e.key === "0") { e.preventDefault(); setZoom(1); }
-});
-
 const setCanvasBackground = () => {
   ctx.fillStyle = "#faf8f4";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
