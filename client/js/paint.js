@@ -73,6 +73,11 @@ redoBtn.addEventListener("click", async () => {
   updateHistoryBtns();
 });
 
+document.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "z") { e.preventDefault(); undoBtn.click(); }
+  if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.shiftKey && e.key === "z"))) { e.preventDefault(); redoBtn.click(); }
+});
+
 const setCanvasBackground = () => {
   ctx.fillStyle = "#faf8f4";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
