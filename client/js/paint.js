@@ -42,7 +42,7 @@ function saveState() {
 }
 
 function updateHistoryBtns() {
-  undoBtn.disabled = undoStack.length < 2;
+  undoBtn.disabled = undoStack.length === 0;
   redoBtn.disabled = redoStack.length === 0;
 }
 
@@ -151,7 +151,6 @@ canvas.addEventListener("mousedown", e => {
     return;
   }
 
-  saveState();
   isDrawing = true;
   lastX = x;
   lastY = y;
@@ -181,8 +180,10 @@ canvas.addEventListener("mousemove", e => {
   lastY = y;
 });
 
-canvas.addEventListener("mouseup",    () => isDrawing = false);
-canvas.addEventListener("mouseleave", () => isDrawing = false);
+canvas.addEventListener("mouseup", () => {
+  if (isDrawing) saveState();
+  isDrawing = false;
+});canvas.addEventListener("mouseleave", () => isDrawing = false);
 
 
 function hexToRgba(hex) {
