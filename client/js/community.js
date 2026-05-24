@@ -1,88 +1,95 @@
 const ARTWORK_IDS = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12101];
 
+const currentArtworkId = new URLSearchParams(window.location.search).get(
+  "artworkId",
+);
+
 async function loadGallery(artworkId) {
+  const section = document.getElementById("gallery-section");
 
-  const section = document.getElementById('gallery-section')
-
-  section.innerHTML = '<p class="loading-msg">Chargement...</p>'
+  section.innerHTML = '<p class="loading-msg">Chargement...</p>';
 
   try {
-
     const response = await fetch(
-      `http://localhost:5000/api/drawings/${artworkId}`
-    )
+      `http://localhost:5000/api/drawings/${artworkId}`,
+    );
 
-    const drawings = await response.json()
+    const drawings = await response.json();
 
-    console.log(drawings)
+    console.log(drawings);
 
-    section.innerHTML = ''
+    section.innerHTML = "";
 
     if (drawings.length === 0) {
+      section.innerHTML = '<p class="empty-msg">aucun dessin</p>';
 
-      section.innerHTML = '<p class="empty-msg">aucun dessin</p>'
-
-      return
+      return;
     }
 
-    const grid = document.createElement('div')
+    const grid = document.createElement("div");
 
-    grid.className = 'gallery-grid'
+    grid.className = "gallery-grid";
 
     drawings.forEach((drawing, i) => {
+      const card = document.createElement("div");
 
-      const card = document.createElement('div')
-
-      card.className = 'drawing-card'
+      card.className = "drawing-card";
 
       card.innerHTML = `
         <img src="${drawing.image}" alt="dessin" />
-      `
+      `;
 
-      grid.appendChild(card)
-    })
+      grid.appendChild(card);
+    });
 
-    section.appendChild(grid)
-
+    section.appendChild(grid);
   } catch (err) {
+    console.error(err);
 
-    console.error(err)
-
-    section.innerHTML = '<p class="empty-msg">erreur chargement</p>'
+    section.innerHTML = '<p class="empty-msg">erreur chargement</p>';
   }
 }
 
 async function buildTabs() {
   const artworks = await Promise.all(
     ARTWORK_IDS.map(async (id) => {
-      const res = await fetch(`https://api.artic.edu/api/v1/artworks/${id}?fields=id,title,image_id`)
-      const data = await res.json()
+      const res = await fetch(
+        `https://api.artic.edu/api/v1/artworks/${id}?fields=id,title,image_id`,
+      );
+      const data = await res.json();
       return {
         id: String(data.data.id),
         title: data.data.title,
-        img: `https://www.artic.edu/iiif/2/${data.data.image_id}/full/400,/0/default.jpg`
-      }
-    })
-  )
+        img: `https://www.artic.edu/iiif/2/${data.data.image_id}/full/400,/0/default.jpg`,
+      };
+    }),
+  );
 
-  const tabsEl = document.getElementById('tabs')
+  const tabsEl = document.getElementById("tabs");
 
   artworks.forEach((art, i) => {
-    const btn = document.createElement('button')
-    btn.className = 'tab' + (i === 0 ? ' active' : '')
-    btn.dataset.id = art.id
-    btn.innerHTML = `<img src="${art.img}" alt="${art.title}" /><span>${art.title}</span>`
+    const btn = document.createElement("button");
+    const selectedId = currentArtworkId || artworks[0].id;
+    btn.className = "tab" + (art.id === selectedId ? " active" : "");
+    btn.dataset.id = art.id;
+    btn.innerHTML = `<img src="${art.img}" alt="${art.title}" /><span>${art.title}</span>`;
 
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
-      btn.classList.add('active')
-      loadGallery(art.id)
-    })
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".tab")
+        .forEach((t) => t.classList.remove("active"));
+      btn.classList.add("active");
+      loadGallery(art.id);
+    });
 
-    tabsEl.appendChild(btn)
-  })
+    tabsEl.appendChild(btn);
+  });
 
-  loadGallery(artworks[0].id)
+    const activeTab = document.querySelector('.tab.active')
+
+    if (activeTab) {
+    activeTab.click()
+    }
 }
 
-buildTabs()
+buildTabs();
