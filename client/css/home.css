@@ -1,0 +1,16 @@
+header h1 {
+  text-align: left;
+  padding: 10px;
+  font-size: 70px;
+  margin-bottom: 10px;
+}
+
+header p {
+  padding-left: 10px;
+  text-align: left;
+  font-size: 20px;
+}
+
+header {
+  border-bottom: none !important;
+}
