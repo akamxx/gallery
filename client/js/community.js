@@ -1,22 +1,24 @@
+import { API, ARTIC_ART_FIELDS, ARTIC_IMG_PARAMS, DEFAULT_AUTHOR, DATE_LOCALE, DATE_OPTIONS } from "../src/constants.js";
+
 const currentArtworkId = new URLSearchParams(window.location.search).get("artworkId");
 
 async function init() {
   if (!currentArtworkId) return;
 
-  const artRes = await fetch(`https://api.artic.edu/api/v1/artworks/${currentArtworkId}?fields=id,title,image_id`);
+  const artRes  = await fetch(`${API.ARTIC_BASE}/artworks/${currentArtworkId}?fields=${ARTIC_ART_FIELDS}`);
   const artData = await artRes.json();
-  document.getElementById("original-img").src = `https://www.artic.edu/iiif/2/${artData.data.image_id}/full/400,/0/default.jpg`;
-  document.getElementById("original-title").textContent = artData.data.title;
+
+  document.getElementById("original-img").src            = `${API.ARTIC_IMG}/${artData.data.image_id}/${ARTIC_IMG_PARAMS}`;
+  document.getElementById("original-title").textContent  = artData.data.title;
 
   const section = document.getElementById("gallery-section");
   section.innerHTML = '<p class="loading-msg">Chargement…</p>';
 
   try {
-    const res = await fetch(`http://localhost:5000/api/drawings/${currentArtworkId}`);
+    const res      = await fetch(`${API.LOCAL_BASE}/drawings/${currentArtworkId}`);
     const drawings = await res.json();
 
     document.getElementById("drawing-count").textContent = drawings.length;
-
     section.innerHTML = "";
 
     if (drawings.length === 0) {
@@ -28,10 +30,12 @@ async function init() {
     grid.className = "gallery-grid";
 
     drawings.forEach((drawing) => {
-      const card = document.createElement("div");
+      const card     = document.createElement("div");
       card.className = "drawing-card";
-      const author = drawing.author || "Anonyme";
-      const date = new Date(drawing.createdAt).toLocaleDateString("fr-CA", { day: "numeric", month: "short", year: "numeric" });
+
+      const author = drawing.author || DEFAULT_AUTHOR;
+      const date   = new Date(drawing.createdAt).toLocaleDateString(DATE_LOCALE, DATE_OPTIONS);
+
       card.innerHTML = `
         <div class="drawing-card-inner">
           <img src="${drawing.image}" alt="dessin par ${author}" loading="lazy" />
