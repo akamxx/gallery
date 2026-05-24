@@ -96,17 +96,20 @@ header {
   aspect-ratio: 3/4;
   object-fit: cover;
   display: block;
+
   border: 3px solid #8a6a2a;
-  outline: 6px solid #c9a84c;
+  outline: 6px solid #352507;
   outline-offset: -3px;
+  border-radius: 3px;
   box-shadow:
-    0 10px 40px rgba(0,0,0,0.25),
-    0 30px 80px rgba(0,0,0,0.15),
-    0 0 0 9px #5a4010,
-    0 0 0 15px #b8922e,
-    0 0 0 17px #e8c86a,
-    0 0 0 20px #3a2a08,
-    0 0 0 22px #7a5a1a;
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 0 0 3px #3a2a0a,
+    0 0 0 8px #5a4010,
+    0 0 0 10px #a67c2b,
+    0 0 0 14px #c9a84c,
+    0 0 0 16px rgba(240, 216, 120, 0.35),
+    0 0 0 20px #2b1f08,
+    0 0 24px rgba(201, 168, 76, 0.15);
 }
 
 .original-title {
