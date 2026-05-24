@@ -64,15 +64,8 @@ h1 {
   width: 80%;
   justify-self: center;
   aspect-ratio: 3 / 4;
-  will-change: transform, box-shadow;
-}
-
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
   border-radius: 5px;
   box-shadow:
-    0 25px 70px rgba(82, 80, 80, 0.75),
-    0 50px 120px rgba(71, 68, 58, 0.55),
     0 0 0 1px rgba(255, 255, 255, 0.03),
     0 0 0 3px #3a2a0a,
     0 0 0 8px #5a4010,
@@ -81,6 +74,22 @@ h1 {
     0 0 0 16px rgba(240, 216, 120, 0.35),
     0 0 0 20px #2b1f08,
     0 0 24px rgba(201, 168, 76, 0.15);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-radius: 5px;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 0 0 3px #3a2a0a,
+    0 0 0 8px #5a4010,
+    0 0 0 10px #a67c2b,
+    0 0 0 14px #c9a84c,
+    0 0 0 16px rgba(240, 216, 120, 0.35),
+    0 0 0 20px #2b1f08,
+    0 0 24px rgba(201, 168, 76, 0.15),
+    0 30px 80px rgba(0, 0, 0, 0.45);
 }
 
 .card img {
