@@ -1,75 +1,62 @@
-const ARTWORK_IDS = [27992, 129884, 111628, 28560, 81539, 6565, 12345, 12311]
+import { API, ARTIC_ART_FIELDS, ARTIC_IMG_PARAMS, DEFAULT_AUTHOR, DATE_LOCALE, DATE_OPTIONS } from "../src/constants.js";
 
-async function loadGallery(artworkId) {
-  const section = document.getElementById('gallery-section')
-  section.innerHTML = '<p class="loading-msg">Chargement...</p>'
+const currentArtworkId = new URLSearchParams(window.location.search).get("artworkId");
+
+async function init() {
+  if (!currentArtworkId) return;
+
+  const artRes  = await fetch(`${API.ARTIC_BASE}/artworks/${currentArtworkId}?fields=${ARTIC_ART_FIELDS}`);
+  const artData = await artRes.json();
+
+  document.getElementById("original-img").src            = `${API.ARTIC_IMG}/${artData.data.image_id}/${ARTIC_IMG_PARAMS}`;
+  document.getElementById("original-title").textContent  = artData.data.title;
+
+  const section = document.getElementById("gallery-section");
+  section.innerHTML = '<p class="loading-msg">Chargement…</p>';
 
   try {
-    const response = await fetch(`/api/drawings/${artworkId}`)
-    const drawings = await response.json()
+    const res      = await fetch(`${API.LOCAL_BASE}/drawings/${currentArtworkId}`);
+    const drawings = await res.json();
 
-    section.innerHTML = ''
+    document.getElementById("drawing-count").textContent = drawings.length;
+    section.innerHTML = "";
 
     if (drawings.length === 0) {
-      section.innerHTML = '<p class="empty-msg">aucun dessin</p>'
-      return
+      section.innerHTML = '<p class="empty-msg">Aucune création pour cette œuvre.</p>';
+      return;
     }
 
-    const grid = document.createElement('div')
-    grid.className = 'gallery-grid'
+    const grid = document.createElement("div");
+    grid.className = "gallery-grid";
 
-    drawings.forEach((drawing, i) => {
-      const card = document.createElement('div')
-      card.className = 'drawing-card'
-      card.style.animationDelay = `${i * 0.06}s`
+    drawings.forEach((drawing) => {
+      const card     = document.createElement("div");
+      card.className = "drawing-card";
+
+      const author = drawing.author || DEFAULT_AUTHOR;
+      const date   = new Date(drawing.createdAt).toLocaleDateString(DATE_LOCALE, DATE_OPTIONS);
+
       card.innerHTML = `
-        <img src="${drawing.image}" alt="dessin" />
-        <div class="card-footer">
-          <span class="card-author">${drawing.author || 'Anonyme'}</span>
-          <span class="card-score">${drawing.score ?? '—'}%</span>
+        <div class="drawing-card-inner">
+          <img src="${drawing.image}" alt="dessin par ${author}" loading="lazy" />
+          <div class="card-overlay">
+            <p class="card-overlay-author">${author}</p>
+            <p class="card-overlay-date">${date}</p>
+          </div>
         </div>
-      `
-      grid.appendChild(card)
-    })
+        <div class="card-footer">
+          <span class="card-author">${author}</span>
+          <span class="card-date">${date}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
 
-    section.appendChild(grid)
-
+    section.appendChild(grid);
   } catch (err) {
-    section.innerHTML = '<p class="empty-msg">erreur changement</p>'
+    console.error(err);
+    section.innerHTML = '<p class="empty-msg">Erreur de chargement.</p>';
   }
 }
 
-async function buildTabs() {
-  const artworks = await Promise.all(
-    ARTWORK_IDS.map(async (id) => {
-      const res = await fetch(`https://api.artic.edu/api/v1/artworks/${id}?fields=id,title,image_id`)
-      const data = await res.json()
-      return {
-        id: String(data.data.id),
-        title: data.data.title,
-        img: `https://www.artic.edu/iiif/2/${data.data.image_id}/full/400,/0/default.jpg`
-      }
-    })
-  )
-
-  const tabsEl = document.getElementById('tabs')
-
-  artworks.forEach((art, i) => {
-    const btn = document.createElement('button')
-    btn.className = 'tab' + (i === 0 ? ' active' : '')
-    btn.dataset.id = art.id
-    btn.innerHTML = `<img src="${art.img}" alt="${art.title}" /><span>${art.title}</span>`
-
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
-      btn.classList.add('active')
-      loadGallery(art.id)
-    })
-
-    tabsEl.appendChild(btn)
-  })
-
-  loadGallery(artworks[0].id)
-}
-
-buildTabs()
+init();
