@@ -1,38 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/paint.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/paint.css" />
     <script src="js/paint.js" defer></script>
-  <title>Canvas</title>
-</head>
-<body>
+    <title>Canvas</title>
+  </head>
 
-<div>
-    <img class="original-art">
-</div>
-<div class="canvas">
-    <label class="piece-name"></label>
-    <canvas></canvas>
-</div>
-<div class="tool-bar">
-<button id="paintbrush">Pinceau</button>
-<button id="eraser">Efface</button>
+  <body>
+    <div id="name-modal-overlay">
+      <div id="name-modal">
+        <button id="name-modal-close" aria-label="Fermer">✕</button>
+        <div class="modal-header">
+          <div class="modal-avatar">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#E5DCCE"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </div>
+          <div>
+            <p class="modal-title">Signer votre œuvre</p>
+            <p class="modal-sub">Votre nom apparaîtra dans la galerie</p>
+          </div>
+        </div>
+        <label class="modal-label" for="author-input">Nom d'artiste</label>
+        <input
+          id="author-input"
+          type="text"
+          placeholder="ex. Marie Dupont"
+          maxlength="60"
+          autocomplete="name"
+        />
+        <p id="author-error">Veuillez entrer un nom.</p>
+        <div class="modal-actions">
+          <button id="name-modal-cancel">Annuler</button>
+          <button id="name-modal-confirm">Publier</button>
+        </div>
+      </div>
+    </div>
 
-<ul>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-</ul>
+    <div>
+      <img class="original-art" />
+    </div>
+    <div class="canvas">
+      <label class="piece-name"></label>
+      <canvas></canvas>
+    </div>
+    <div class="tool-bar">
+      <button id="paintbrush">Pinceau</button>
+      <button id="eraser">Efface</button>
 
-<div class="row buttons">
-    <button class="clear-canvas">Effacer le canvas</button>
-    <button class="save-image">Sauvegarder</button>
-</div>
-</div>
+      <ul>
+        <li><button class="color"></button></li>
+        <li><button class="color"></button></li>
+        <li><button class="color"></button></li>
+        <li><button class="color"></button></li>
+        <li><button class="color"></button></li>
+      </ul>
 
-</body>
+      <div class="row buttons">
+        <button class="clear-canvas">Effacer le canvas</button>
+        <button class="save-image">Sauvegarder</button>
+      </div>
+    </div>
+  </body>
 </html>

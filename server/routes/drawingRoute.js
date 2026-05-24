@@ -7,7 +7,8 @@ router.post('/', async (req, res) => {
 
   const drawing = new Drawing({
     image: req.body.image,
-    artworkId: req.body.artworkId
+    artworkId: req.body.artworkId,
+    author: req.body.author,
   })
   
   await drawing.save()

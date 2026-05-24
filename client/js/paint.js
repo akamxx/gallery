@@ -116,18 +116,28 @@ saveButton.addEventListener("click", async () => {
 
   const image = canvas.toDataURL("image/png");
 
+  const author = await openNameModal();
+
+  if (!author) return;
+
   try {
 
-    const response = await fetch("http://localhost:5000/api/drawings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        image,
-        artworkId
-      })
-    });
+    const response = await fetch(
+      "http://localhost:5000/api/drawings",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          image,
+          artworkId,
+          author
+        })
+      }
+    );
 
     const data = await response.json();
 
@@ -143,3 +153,45 @@ saveButton.addEventListener("click", async () => {
     alert("Erreur sauvegarde");
   }
 });
+
+function openNameModal() {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById("name-modal-overlay");
+    const input = document.getElementById("author-input");
+    const confirmBtn = document.getElementById("name-modal-confirm");
+    const cancelBtn = document.getElementById("name-modal-cancel");
+    const closeBtn = document.getElementById("name-modal-close");
+    const error = document.getElementById("author-error");
+
+    input.value = "";
+    error.style.display = "none";
+    overlay.classList.add("open");
+    setTimeout(() => input.focus(), 50);
+
+    const cleanup = () => {
+      overlay.classList.remove("open");
+      confirmBtn.removeEventListener("click", onConfirm);
+      cancelBtn.removeEventListener("click", onCancel);
+      closeBtn.removeEventListener("click", onCancel);
+      input.removeEventListener("keydown", onKeydown);
+      overlay.removeEventListener("click", onOverlayClick);
+    };
+
+    const onConfirm = () => {
+      const name = input.value.trim();
+      if (!name) { error.style.display = "block"; input.focus(); return; }
+      cleanup();
+      resolve(name);
+    };
+
+    const onCancel = () => { cleanup(); resolve(null); };
+    const onKeydown = (e) => { if (e.key === "Enter") onConfirm(); if (e.key === "Escape") onCancel(); };
+    const onOverlayClick = (e) => { if (e.target === overlay) onCancel(); };
+
+    confirmBtn.addEventListener("click", onConfirm);
+    cancelBtn.addEventListener("click", onCancel);
+    closeBtn.addEventListener("click", onCancel);
+    input.addEventListener("keydown", onKeydown);
+    overlay.addEventListener("click", onOverlayClick);
+  });
+}

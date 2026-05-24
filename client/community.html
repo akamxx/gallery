@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <link rel="stylesheet" href="../css/community.css">
-    <script type="module" src="../js/community.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renaissance — Galerie</title>
+  <link rel="stylesheet" href="../css/community.css">
+  <script type="module" src="../js/community.js"></script>
 </head>
-
 <body>
-    <header>
-        <div class="site-title">RENAISSANCE</div>
-        <a href="/" class="btn-home">Accueil</a>
-    </header>
-    
-    <div class = "title">
-        <h1>Galerie des<em> Oeuvres</em></h1>
-    </div> 
-    <div class="tabs-wrap">
-        <div class="tabs" id="tabs"></div>
-    </div>
+  <header>
+    <div class="site-title">RENAISSANCE</div>
+    <a href="/" class="btn-home">← Accueil</a>
+  </header>
 
-    <div id="gallery-section"></div>
+  <div class="community-layout">
+    <aside class="artwork-side">
+      <p class="artwork-side-label">Œuvre originale</p>
+      <img id="original-img" class="original-img" alt="" />
+      <p id="original-title" class="original-title"></p>
+      <div class="artwork-side-divider"></div>
+      <div class="artwork-side-count">
+        <span id="drawing-count">—</span>
+        Créations
+      </div>
+    </aside>
 
+    <main class="gallery-side">
+      <h1 class="gallery-heading">Interprétations</h1>
+      <p class="gallery-sub">Créations de la communauté</p>
+      <div id="gallery-section"></div>
+    </main>
+  </div>
 </body>
-
-
-
 </html>
