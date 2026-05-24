@@ -42,7 +42,7 @@ function saveState() {
 }
 
 function updateHistoryBtns() {
-  undoBtn.disabled = undoStack.length < 2;
+  undoBtn.disabled = undoStack.length === 0;
   redoBtn.disabled = redoStack.length === 0;
 }
 
@@ -71,19 +71,6 @@ redoBtn.addEventListener("click", async () => {
   undoStack.push(state);
   await restoreState(state);
   updateHistoryBtns();
-});
-
-document.addEventListener("keydown", e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "z") { e.preventDefault(); undoBtn.click(); }
-  if ((e.ctrlKey || e.metaKey) && (e.key === "y" || (e.shiftKey && e.key === "z"))) { e.preventDefault(); redoBtn.click(); }
-
-  if (e.key === "b" || e.key === "B") brushBtn.click();
-  if (e.key === "e" || e.key === "E") eraserBtn.click();
-  if (e.key === "g" || e.key === "G") bucketBtn.click();
-
-  if ((e.ctrlKey || e.metaKey) && e.key === "=") { e.preventDefault(); setZoom(zoomScale + 0.15); }
-  if ((e.ctrlKey || e.metaKey) && e.key === "-") { e.preventDefault(); setZoom(zoomScale - 0.15); }
-  if ((e.ctrlKey || e.metaKey) && e.key === "0") { e.preventDefault(); setZoom(1); }
 });
 
 const setCanvasBackground = () => {
@@ -151,7 +138,6 @@ canvas.addEventListener("mousedown", e => {
     return;
   }
 
-  saveState();
   isDrawing = true;
   lastX = x;
   lastY = y;
@@ -181,8 +167,10 @@ canvas.addEventListener("mousemove", e => {
   lastY = y;
 });
 
-canvas.addEventListener("mouseup",    () => isDrawing = false);
-canvas.addEventListener("mouseleave", () => isDrawing = false);
+canvas.addEventListener("mouseup", () => {
+  if (isDrawing) saveState();
+  isDrawing = false;
+});canvas.addEventListener("mouseleave", () => isDrawing = false);
 
 
 function hexToRgba(hex) {
