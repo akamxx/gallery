@@ -66,14 +66,12 @@ async function fetchArtworks() {
       card.innerHTML = `
         <img src="${imageUrl}" alt="${artwork.title}" />
 
-        <!-- Bottom gradient info (default state) -->
         <div class="card-info">
           <h2>${artwork.title}</h2>
           <p class="artist">${artwork.artist_title || "Unknown artist"}</p>
           <p class="date">${artwork.date_display || ""}</p>
         </div>
 
-        <!-- Centered hover overlay -->
         <div class="card-hover">
           <div class="palette-row">${swatchesHTML}</div>
           <div class="hover-title">${artwork.title}</div>
