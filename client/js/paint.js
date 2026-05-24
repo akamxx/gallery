@@ -285,34 +285,21 @@ clearBtn.addEventListener("click", () => {
   saveState();
   setCanvasBackground();
 });
-
 saveBtn.addEventListener("click", async () => {
   const image = canvas.toDataURL("image/png");
+
+  const author = await openNameModal();
+  if (!author) return;
+
   saveBtn.textContent = "Envoi...";
   saveBtn.disabled = true;
 
-  const author = await openNameModal();
-
-  if (!author) return;
-
   try {
-
-    const response = await fetch(
-      "http://localhost:5000/api/drawings",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          image,
-          artworkId,
-          author
-        })
-      }
-    );
+    const response = await fetch("http://localhost:5000/api/drawings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image, artworkId, author })
+    });
 
     if (!response.ok) throw new Error();
     showToast("✓ Dessin sauvegardé !");
