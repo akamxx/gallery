@@ -3,36 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/paint.css">
-    <script src="js/paint.js" defer></script>
-  <title>Canvas</title>
+  <link rel="stylesheet" href="css/paint.css">
+  <title>Atelier</title>
 </head>
 <body>
 
-<div>
-    <img class="original-art">
-</div>
-<div class="canvas">
+<header>
+  <div class="header-left">
+    <a href="/" class="btn-back">← Galerie</a>
     <label class="piece-name"></label>
-    <canvas></canvas>
-</div>
-<div class="tool-bar">
-<button id="paintbrush">Pinceau</button>
-<button id="eraser">Efface</button>
+  </div>
+  <div class="header-right">
+    <button class="btn-undo" title="Annuler (Ctrl+Z)" disabled>↩</button>
+    <button class="btn-redo" title="Rétablir (Ctrl+Y)" disabled>↪</button>
+  </div>
+</header>
 
-<ul>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-    <li><button class="color"></button></li>
-</ul>
+<div class="workspace">
 
-<div class="row buttons">
-    <button class="clear-canvas">Effacer le canvas</button>
-    <button class="save-image">Sauvegarder</button>
-</div>
+  <!-- LEFT: image de référence -->
+  <div class="ref-panel">
+    <div class="ref-label">Référence</div>
+    <div class="ref-img-wrap">
+      <img class="original-art" src="" alt="Œuvre originale" />
+    </div>
+    <div class="ref-hint">Reproduis cette œuvre avec les couleurs extraites de la palette.</div>
+  </div>
+
+  <!-- CENTER: canvas -->
+  <div class="canvas-panel">
+    <div class="canvas-wrap">
+      <canvas></canvas>
+    </div>
+  </div>
+
+  <!-- RIGHT: outils -->
+  <div class="tool-panel">
+
+    <div class="tool-section">
+      <div class="tool-section-label">Outil</div>
+      <div class="tool-row">
+        <button class="tool-btn active" id="paintbrush">
+          <span class="icon">🖌️</span>Pinceau
+        </button>
+        <button class="tool-btn" id="eraser">
+          <span class="icon">⬜</span>Efface
+        </button>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <div class="tool-section-label">Taille</div>
+      <div class="size-row">
+        <button class="size-btn active" data-size="3">
+          <div class="size-dot" style="width:4px;height:4px"></div>
+        </button>
+        <button class="size-btn" data-size="8">
+          <div class="size-dot" style="width:8px;height:8px"></div>
+        </button>
+        <button class="size-btn" data-size="16">
+          <div class="size-dot" style="width:13px;height:13px"></div>
+        </button>
+        <button class="size-btn" data-size="28">
+          <div class="size-dot" style="width:18px;height:18px"></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="tool-section">
+      <div class="tool-section-label">Palette</div>
+      <div class="colors-grid" id="colorsGrid"></div>
+      <div class="current-color-wrap">
+        <div class="current-color-swatch" id="currentSwatch"></div>
+        <div class="current-color-label" id="currentColorLabel">Couleur active</div>
+      </div>
+    </div>
+
+    <div class="tool-section" style="border-bottom:none; margin-top:auto;">
+      <div class="action-row">
+        <button class="btn-action btn-clear">Effacer tout</button>
+        <button class="btn-action btn-save">Sauvegarder →</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
+<script src="js/paint.js" defer></script>
 </body>
 </html>
